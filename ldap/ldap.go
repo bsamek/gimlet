@@ -38,36 +38,14 @@ type CreationOpts struct {
 
 	UserCache UserCache
 	// Functions to produce a UserCache
-	PutCache      PutUserGetToken // Put user to cache
-	GetCache      GetUserByToken  // Get user from cache
-	ClearCache    ClearUserToken  // Remove user(s) from cache
-	GetUser       GetUserByID     // Get user from storage
-	GetCreateUser GetOrCreateUser // Get or create user from storage
+	PutCache      gimlet.PutUserGetToken // Put user to cache
+	GetCache      gimlet.GetUserByToken  // Get user from cache
+	ClearCache    gimlet.ClearUserToken  // Remove user(s) from cache
+	GetUser       gimlet.GetUserByID     // Get user from storage
+	GetCreateUser gimlet.GetOrCreateUser // Get or create user from storage
 
 	connect connectFunc // connect changes connection behavior for testing
 }
-
-// PutUserGetToken is a function provided by the client to cache users. It generates, saves, and
-// returns a new token. Updating the user's TTL should happen in this function.
-type PutUserGetToken func(gimlet.User) (string, error)
-
-// GetUserByToken is a function provided by the client to retrieve cached users by token.
-// It returns an error if and only if there was an error retrieving the user from the cache.
-// It returns (<user>, true, nil) if the user is present in the cache and is valid.
-// It returns (<user>, false, nil) if the user is present in the cache but has expired.
-// It returns (nil, false, nil) if the user is not present in the cache.
-type GetUserByToken func(string) (gimlet.User, bool, error)
-
-// ClearUserToken is a function provided by the client to remove users' tokens from
-// cache. Passing true will ignore the user passed and clear all users.
-type ClearUserToken func(gimlet.User, bool) error
-
-// GetUserByID is a function provided by the client to get a user from persistent storage.
-type GetUserByID func(string) (gimlet.User, error)
-
-// GetOrCreateUser is a function provided by the client to get a user from
-// persistent storage, or if the user does not exist, to create and save it.
-type GetOrCreateUser func(gimlet.User) (gimlet.User, error)
 
 type connectFunc func(url, port string) (ldap.Client, error)
 

@@ -169,11 +169,11 @@ func (c *userCache) GetOrCreate(u gimlet.User) (gimlet.User, error) {
 // User cache wrapping external functions
 
 type externalUserCache struct {
-	put         PutUserGetToken // Put user to cache
-	get         GetUserByToken  // Get user from cache
-	clear       ClearUserToken  // Clear user from cache
-	find        GetUserByID     // Get user from storage
-	getOrCreate GetOrCreateUser // Get or create user from storage
+	put         gimlet.PutUserGetToken // Put user to cache
+	get         gimlet.GetUserByToken  // Get user from cache
+	clear       gimlet.ClearUserToken  // Clear user from cache
+	find        gimlet.GetUserByID     // Get user from storage
+	getOrCreate gimlet.GetOrCreateUser // Get or create user from storage
 }
 
 func (opts CreationOpts) MakeUserCache() UserCache {
